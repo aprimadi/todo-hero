@@ -1,22 +1,42 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
-  "main": "main.js",
+  "name": "TodoHero",
+  "version": "0.0.1",
+  "description": "Gamify your tasks",
+  "main": "build/main/main.js",
   "scripts": {
-    "start": "electron ."
+    "build": "buble src --target chrome:71 --objectAssign Object.assign --output build",
+    "package": "node ./bin/package.js",
+    "start": "npm run-script build && electron ."
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "todo-list",
+    "todo",
+    "task",
+    "gamification"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "TodoHero, LLC",
+  "license": "MIT",
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/styles": "^4.10.0",
+    "application-config": "^2.0.0",
+    "clsx": "^1.1.1",
+    "debounce": "^1.2.0",
+    "fn-getter": "^1.0.0",
+    "location-history": "^1.1.2",
+    "nanoid": "^3.1.16",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "semver": "^7.3.2"
+  },
   "devDependencies": {
-    "electron": "^10.1.5"
+    "appdmg": "^0.6.0",
+    "buble": "^0.20.0",
+    "cross-zip": "^4.0.0",
+    "electron": "^10.1.5",
+    "electron-packager": "^15.1.0",
+    "minimist": "^1.2.5",
+    "rimraf": "^3.0.2"
   }
 }

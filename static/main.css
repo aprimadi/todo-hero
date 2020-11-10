@@ -1,0 +1,141 @@
+/*
+ * BASIC STYLES
+ */
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: #FFFFFF;
+  cursor: default;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.app {
+  color: #757575; /* grey600 */
+  font-family: BlinkMacSystemFont, 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.5em;
+  display: flex;
+  flex-direction: column;
+}
+
+.app.is-win32 {
+  font-family: 'Segoe UI', sans-serif;
+}
+
+#body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  flex-grow: 0;
+}
+.content {
+  overflow: hidden;
+}
+
+.page {
+  height: 100%;
+}
+
+.scrollable-content {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.holder-container {
+  display: flex;
+  width: 100%;
+  padding: 5px 10px;
+}
+.holder-container .holder {
+  vertical-align: top;
+  flex-grow: 1;
+}
+.holder-container .holder + .holder {
+  margin-left: 10px;
+}
+.holder-container .checkbox-holder {
+  flex-grow: 0;
+}
+.holder-container .point-holder {
+  flex-grow: 0;
+  width: 80px;
+}
+.holder-container .point-type-holder {
+  flex-grow: 0;
+  width: 100px;
+}
+
+.holder-container.bronze {
+  background-color: #cd7f32;
+}
+.holder-container.silver {
+  background-color: #c0c0c0;
+}
+.holder-container.gold {
+  background-color: #d4af37;
+}
+
+.todo-list {
+  overflow: hidden;
+  height: 100%;
+}
+.todo-list-item .name-holder {
+  flex-grow: 2;
+}
+.todo-list-item .tag-select-holder {
+  width: 200px;
+  flex-grow: 0;
+}
+.todo-list-item .tag-point-holder {
+  width: 60px;
+  flex-grow: 0;
+}
+.todo-list .scrollable-content {
+  height: calc(100% - 51px);
+}
+
+.point-summary {
+  padding: 0;
+}
+
+.main-button {
+  width: 100%;
+  text-align: center;
+  background-color: #e8f5e9;
+  padding: 15px;
+}
+.main-button:hover {
+  cursor: pointer;
+}
+
+.point-summary .holder {
+  text-align: center;
+  line-height: 48px;
+  font-size: 32px;
+}
+.point-summary .holder + .holder {
+  margin: 0;
+}
+.point-summary .ps-bronze {
+  background-color: #cd7f32;
+}
+.point-summary .ps-silver {
+  background-color: #c0c0c0;
+}
+.point-summary .ps-gold {
+  background-color: #d4af37;
+}
