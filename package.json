@@ -5,6 +5,7 @@
   "main": "build/main/main.js",
   "scripts": {
     "build": "buble src --target chrome:71 --objectAssign Object.assign --output build",
+    "gh-release": "gh-release",
     "package": "node ./bin/package.js",
     "start": "npm run-script build && electron ."
   },
@@ -36,6 +37,7 @@
     "cross-zip": "^4.0.0",
     "electron": "^10.1.5",
     "electron-packager": "^15.1.0",
+    "gh-release": "^4.0.3",
     "minimist": "^1.2.5",
     "rimraf": "^3.0.2"
   }

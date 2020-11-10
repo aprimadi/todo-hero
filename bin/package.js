@@ -15,6 +15,7 @@ const zip = require('cross-zip')
 const config = require('../src/config')
 const pkg = require('../package.json')
 
+const BUILD_NAME = config.APP_NAME + '-v' + config.APP_VERSION
 const BUILD_PATH = path.join(config.ROOT_PATH, 'build')
 const DIST_PATH = path.join(config.ROOT_PATH, 'dist')
 const NODE_MODULES_PATH = path.join(config.ROOT_PATH, 'node_modules')
@@ -137,6 +138,7 @@ function buildDarwin(cb) {
     const resourcesPath = path.join(contentsPath, 'Resources')
 
     cp.execSync(`cp ${config.APP_ICON + '.icns'} ${resourcesPath}`)
+    pack(cb)
 
     function pack(cb) {
       packageZip()
