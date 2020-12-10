@@ -1,6 +1,6 @@
 {
   "name": "TodoHero",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Gamify your tasks",
   "main": "build/main/main.js",
   "scripts": {
