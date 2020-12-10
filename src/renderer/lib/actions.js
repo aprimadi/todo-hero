@@ -4,6 +4,12 @@ module.exports = {
 
   UPDATE: 'UPDATE',
 
+  CONFIRMATION: {
+    SHOW: 'CONFIRMATION:SHOW',
+    HIDE: 'CONFIRMATION:HIDE',
+    CONFIRM: 'CONFIRMATION:CONFIRM',
+    CANCEL: 'CONFIRMATION:CANCEL',
+  },
   NAVS: {
     GO_TO_PAGE: 'GO_TO_PAGE',
   },
@@ -11,6 +17,7 @@ module.exports = {
     ADD_TODO: 'ADD_TODO',
     UPDATE_TODO: 'UPDATE_TODO',
     TOGGLE_TODO: 'TOGGLE_TODO',
+    DELETE_TODO: 'DELETE_TODO',
   },
   TAGS: {
     ADD_TAG: 'ADD_TAG',

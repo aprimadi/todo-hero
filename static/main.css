@@ -104,6 +104,12 @@ body {
   width: 60px;
   flex-grow: 0;
 }
+.todo-list-item .delete-action-holder {
+  flex-grow: 0;
+}
+.todo-list-item .delete-action-holder:hover {
+  cursor: pointer;
+}
 .todo-list .scrollable-content {
   height: calc(100% - 51px);
 }

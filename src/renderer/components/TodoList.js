@@ -4,10 +4,12 @@ const clsx = require('clsx')
 const TextField = require('@material-ui/core/TextField').default
 const Select = require('@material-ui/core/Select').default
 const MenuItem = require('@material-ui/core/MenuItem').default
+const DeleteIcon = require('@material-ui/icons/Delete').default
 
 const Checkbox = require('../components/Checkbox')
 const { dispatcher, dispatch } = require('../lib/dispatcher')
 const actions = require('../lib/actions').TODO_LIST
+const confirmationActions = require('../lib/actions').CONFIRMATION
 
 class TodoList extends React.Component {
   render() {
@@ -62,6 +64,9 @@ class TodoList extends React.Component {
           />
         </div>
         {this.renderTodoTag(todo)}
+        <div className='holder delete-action-holder'>
+          <DeleteIcon onClick={this.onClickDeleteTodo.bind(this, todo.id)}></DeleteIcon>
+        </div>
       </div>
     )
   }
@@ -151,6 +156,10 @@ class TodoList extends React.Component {
   onToggleTodo(todoId) {
     const todo = this.findTodo(todoId)
     dispatch(actions.TOGGLE_TODO, todo.id)
+  }
+
+  onClickDeleteTodo(todoId) {
+    dispatch(confirmationActions.SHOW, 'Are you sure you want to delete this task?', () => dispatch(actions.DELETE_TODO, todoId))
   }
 }
 

@@ -34,6 +34,10 @@ function onState(err, _state) {
   window.dispatch = dispatch
   
   controllers = {
+    confirmation: createGetter(() => {
+      const ConfirmationController = require('./controllers/ConfirmationController')
+      return new ConfirmationController(state)
+    }),
     navs: createGetter(() => {
       const NavsController = require('./controllers/NavsController')
       return new NavsController(state)
@@ -102,10 +106,16 @@ const dispatchHandlers = {
   // navs
   [actions.NAVS.GO_TO_PAGE]: (url) => controllers.navs().goToPage(url),
 
+  [actions.CONFIRMATION.SHOW]: (text, onConfirm, onCancel) => controllers.confirmation().show(text, onConfirm, onCancel),
+  [actions.CONFIRMATION.HIDE]: () => controllers.confirmation().hide(),
+  [actions.CONFIRMATION.CONFIRM]: () => controllers.confirmation().confirm(),
+  [actions.CONFIRMATION.CANCEL]: () => controllers.confirmation().cancel(),
+
   // todoList
   [actions.TODO_LIST.ADD_TODO]: (name, tagId) => controllers.todoList().addTodo(name, tagId),
   [actions.TODO_LIST.UPDATE_TODO]: (id, name, tagId) => controllers.todoList().updateTodo(id, name, tagId),
   [actions.TODO_LIST.TOGGLE_TODO]: (id) => controllers.todoList().toggleTodo(id),
+  [actions.TODO_LIST.DELETE_TODO]: (id) => controllers.todoList().deleteTodo(id),
 
   // tags
   [actions.TAGS.ADD_TAG]: (name, point, pointType) => controllers.tags().addTag(name, point, pointType),

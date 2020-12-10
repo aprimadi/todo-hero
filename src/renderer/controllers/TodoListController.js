@@ -34,4 +34,10 @@ module.exports = class TodoListController {
     dispatch(actions.STATE_SAVE)
     dispatcher(actions.UPDATE)
   }
+
+  deleteTodo(id) {
+    this.state.saved.todos = this.state.saved.todos.filter((t) => t.id != id)
+    dispatch(actions.STATE_SAVE)
+    dispatcher(actions.UPDATE)
+  }
 }

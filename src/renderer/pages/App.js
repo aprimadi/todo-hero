@@ -10,6 +10,7 @@ const Nav = require('../components/Nav')
 const TodoListPage = require('./TodoListPage')
 const RewardsPage = require('./RewardsPage')
 const TagsPage = require('./TagsPage')
+const ConfirmationDialog = require('../components/ConfirmationDialog')
 const routes = require('../lib/routes')
 
 const Views = {
@@ -61,6 +62,7 @@ class App extends React.Component {
         <div className='app' style={appStyle}>
           <Nav state={state} />
           <div key='content' className='content'>{this.getView()}</div>
+          <ConfirmationDialog state={state} />
         </div>
       </ThemeProvider>
     )

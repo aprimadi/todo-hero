@@ -37,6 +37,12 @@ function getDefaultState() {
       title: config.APP_WINDOW_TITLE
     },
     pointTypes: ['bronze', 'silver', 'gold'],
+    confirmationDialog: {
+      show: false,
+      text: "",
+      onConfirm: () => {}, 
+      onCancel: () => {},
+    },
 
     /*
      * Saved state is read from and written to a file every time the app runs.
