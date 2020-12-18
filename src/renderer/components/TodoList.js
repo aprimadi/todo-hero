@@ -1,5 +1,6 @@
 const React = require('react')
 const clsx = require('clsx')
+const debounce = require('debounce')
 
 const TextField = require('@material-ui/core/TextField').default
 const Select = require('@material-ui/core/Select').default
@@ -11,40 +12,10 @@ const { dispatcher, dispatch } = require('../lib/dispatcher')
 const actions = require('../lib/actions').TODO_LIST
 const confirmationActions = require('../lib/actions').CONFIRMATION
 
-class TodoList extends React.Component {
+class TodoItem extends React.Component {
   render() {
-    const state = this.props.state
-
-    const todoItems = []
-    var todos = [...state.saved.todos]
-    let incomplete = todos.filter((t) => !t.done)
-    let complete = todos.filter((t) => t.done)
-    incomplete.sort(this.todoSortFn.bind(this))
-    complete.sort(this.todoSortFn.bind(this))
-    for (let todo of incomplete) {
-      todoItems.push(this.renderTodo(todo))
-    }
-    for (let todo of complete) {
-      todoItems.push(this.renderTodo(todo))
-    }
-    
-    return (
-      <div className='todo-list'>
-        <div 
-          className='add-todo-button main-button'
-          onClick={dispatcher(actions.ADD_TODO, '', null)}
-        >
-          Add Todo
-        </div>
-        <div className='scrollable-content'>
-          {todoItems}
-        </div>
-      </div>
-    )
-  }
-
-  renderTodo(todo) {
-    const tag = this.findTag(todo.tagId)
+    const todo = this.props.todo
+    const tag = findTag(this.props.state, todo.tagId)
     const itemClass = clsx('todo-list-item', 'holder-container', tag && tag.pointType)
     return (
       <div key={todo.id} className={itemClass}>
@@ -52,7 +23,7 @@ class TodoList extends React.Component {
           <Checkbox 
             className='checkbox'
             checked={todo.done} 
-            onChange={this.onToggleTodo.bind(this, todo.id)} 
+            onChange={this.onToggleTodo.bind(this, todo)} 
           />
         </div>
         <div className='holder name-holder'>
@@ -60,22 +31,22 @@ class TodoList extends React.Component {
             fullWidth
             value={todo.name} 
             placeholder={"Add description"} 
-            onChange={this.onChangeName.bind(this, todo.id)}
+            onChange={this.onChangeName.bind(this, todo)}
           />
         </div>
-        {this.renderTodoTag(todo)}
+        {this.renderTag(todo)}
         <div className='holder delete-action-holder'>
-          <DeleteIcon onClick={this.onClickDeleteTodo.bind(this, todo.id)}></DeleteIcon>
+          <DeleteIcon onClick={this.onClickDeleteTodo.bind(this, todo)}></DeleteIcon>
         </div>
       </div>
     )
   }
 
-  renderTodoTag(todo) {
+  renderTag(todo) {
     const state = this.props.state
 
     const tags = state.saved.tags
-    const tag = this.findTag(todo.tagId)
+    const tag = findTag(this.props.state, todo.tagId)
     let tagEls = []
     
     // Build select items
@@ -92,7 +63,7 @@ class TodoList extends React.Component {
           fullWidth
           className='tag-select'
           value={tag && tag.id}
-          onChange={this.onSelectTag.bind(this, todo.id)}
+          onChange={this.onSelectTag.bind(this, todo)}
         >
           {selectItems} 
         </Select>
@@ -116,9 +87,58 @@ class TodoList extends React.Component {
     return tagEls
   }
 
+  onSelectTag(todo, e) {
+    dispatch(actions.UPDATE_TODO, todo.id, todo.name, e.target.value)
+  }
+
+  onChangeName(todo, e) {
+    dispatch(actions.UPDATE_TODO, todo.id, e.target.value, todo.tagId)
+  }
+
+  onToggleTodo(todo) {
+    dispatch(actions.TOGGLE_TODO, todo.id)
+  }
+
+  onClickDeleteTodo(todo) {
+    dispatch(confirmationActions.SHOW, 'Are you sure you want to delete this task?', () => dispatch(actions.DELETE_TODO, todo.id))
+  }
+}
+
+class TodoList extends React.Component {
+  render() {
+    const state = this.props.state
+
+    const todoItems = []
+    var todos = [...state.saved.todos]
+    let incomplete = todos.filter((t) => !t.done)
+    let complete = todos.filter((t) => t.done)
+    incomplete.sort(this.todoSortFn.bind(this))
+    complete.sort(this.todoSortFn.bind(this))
+    for (let todo of incomplete) {
+      todoItems.push(<TodoItem state={state} todo={todo} />)
+    }
+    for (let todo of complete) {
+      todoItems.push(<TodoItem state={state} todo={todo} />)
+    }
+    
+    return (
+      <div className='todo-list'>
+        <div 
+          className='add-todo-button main-button'
+          onClick={dispatcher(actions.ADD_TODO, '', null)}
+        >
+          Add Todo
+        </div>
+        <div className='scrollable-content'>
+          {todoItems}
+        </div>
+      </div>
+    )
+  }
+
   todoSortFn(a, b) {
-    const ta = this.findTag(a.tagId)
-    const tb = this.findTag(b.tagId)
+    const ta = findTag(this.props.state, a.tagId)
+    const tb = findTag(this.props.state, b.tagId)
     const p = {
       bronze: 1,
       silver: 2,
@@ -130,38 +150,15 @@ class TodoList extends React.Component {
       return 0
     }
   }
-
-  findTodo(todoId) {
-    const state = this.props.state
-    const todo = state.saved.todos.find((t) => t.id == todoId)
-    return todo
-  }
-
-  findTag(tagId) {
-    const state = this.props.state
-    const tag = state.saved.tags.find((t) => t.id == tagId)
-    return tag
-  }
-
-  onSelectTag(todoId, e) {
-    const todo = this.findTodo(todoId)
-    dispatch(actions.UPDATE_TODO, todo.id, todo.name, e.target.value)
-  }
-
-  onChangeName(todoId, e) {
-    const todo = this.findTodo(todoId)
-    dispatch(actions.UPDATE_TODO, todo.id, e.target.value, todo.tagId)
-  }
-
-  onToggleTodo(todoId) {
-    const todo = this.findTodo(todoId)
-    dispatch(actions.TOGGLE_TODO, todo.id)
-  }
-
-  onClickDeleteTodo(todoId) {
-    dispatch(confirmationActions.SHOW, 'Are you sure you want to delete this task?', () => dispatch(actions.DELETE_TODO, todoId))
-  }
 }
 
+function findTag(state, tagId) {
+  const tag = state.saved.tags.find((t) => t.id == tagId)
+  return tag
+}
+
+const updateTodoName = debounce((todo, e) => {
+  dispatch(actions.UPDATE_TODO, todo.id, e.target.value, todo.tagId)
+}, 1000)
 
 module.exports = TodoList
