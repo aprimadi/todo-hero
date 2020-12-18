@@ -52,9 +52,11 @@ class TodoItem extends React.Component {
     // Build select items
     let selectItems = []
     for (var t of tags) {
-      selectItems.push(
-        <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>
-      )
+      if (t) {
+        selectItems.push(
+          <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>
+        )
+      }
     }
 
     tagEls.push(
@@ -153,7 +155,7 @@ class TodoList extends React.Component {
 }
 
 function findTag(state, tagId) {
-  const tag = state.saved.tags.find((t) => t.id == tagId)
+  const tag = state.saved.tags[tagId]
   return tag
 }
 

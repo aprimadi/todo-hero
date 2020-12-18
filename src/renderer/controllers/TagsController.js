@@ -10,22 +10,26 @@ module.exports = class TagsController {
 
   addTag(name, point, pointType) {
     const tag = {
-      id: nanoid(),
+      id: this.state.saved.tags.length,
       name: name,
       point: point,
       pointType: pointType
     }
-    this.state.saved.tags.unshift(tag)
+    this.state.saved.tags.push(tag)
     dispatch(actions.STATE_SAVE)
     dispatcher(actions.UPDATE)
   }
 
   updateTag(id, name, point, pointType) {
-    const tag = this.state.saved.tags.find((t) => t.id == id)
-    tag.name = name
-    tag.point = point
-    tag.pointType = pointType
-    dispatch(actions.STATE_SAVE)
-    dispatcher(actions.UPDATE)
+    const tag = this.state.saved.tags[id]
+    if (tag) {
+      tag.name = name
+      tag.point = point
+      tag.pointType = pointType
+      dispatch(actions.STATE_SAVE)
+      dispatcher(actions.UPDATE)
+    } else {
+      console.error("Assertion violation: trying to update tag that doesn't exist", "tagId:", id)
+    }
   }
 }

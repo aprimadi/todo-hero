@@ -52,8 +52,6 @@ class RewardList extends React.Component {
     for (let todo of todos) {
       if (todo.tagId && todo.done) {
         let tag = this.findTag(todo.tagId)
-        console.log('tag:', tag)
-        console.log('tag.point:', tag.point)
         if (tag) {
           total[tag.pointType] = total[tag.pointType] + parseInt(tag.point)
         }
@@ -67,8 +65,6 @@ class RewardList extends React.Component {
         total[reward.pointType] = total[reward.pointType] - parseInt(reward.point)
       }
     }
-
-    console.log('total:', total)
 
     return total
   }
@@ -137,7 +133,7 @@ class RewardList extends React.Component {
 
   findTag(tagId) {
     const state = this.props.state
-    return state.saved.tags.find((t) => t.id == tagId)
+    return state.saved.tags[tagId]
   }
 
   onToggleReward(reward) {

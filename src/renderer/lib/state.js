@@ -68,7 +68,7 @@ function setupStateSaved() {
   const saved = {
     todos: [],
     rewards: [],
-    tags: [],
+    tags: [null],   // 0-index slot is reserved.
   }
 
   return saved

@@ -13,9 +13,11 @@ class TagList extends React.Component {
     const state = this.props.state
 
     const tagItems = []
-    const tags = [...state.saved.tags]
+    const tags = [...state.saved.tags].reverse()
     for (let tag of tags) {
-      tagItems.push(this.renderTag(tag))
+      if (tag) {
+        tagItems.push(this.renderTag(tag))
+      }
     }
     
     return (
