@@ -1,9 +1,9 @@
 const appConfig = require('application-config')('TodoHero')
 const { EventEmitter } = require('events')
+const debounce = require('debounce')
 
 const config = require('../../config')
-
-const debounce = require('debounce')
+const TodoStore = require('../stores/TodoStore')
 
 const SAVE_DEBOUNCE_INTERVAL = 1000
 
@@ -11,9 +11,6 @@ const State = module.exports = Object.assign(new EventEmitter(), {
   load,
   // state.save() calls are rate-limited. Use state.saveImmediate() to skip limit.
   save: function() {
-    // Perf optimization: Lazy-require debounce (and it's dependencies)
-    const debounce = require('debounce')
-
     // After first State.save() invocation, future calls go straight to the
     // debounced function
     State.save = debounce(saveImmediate, SAVE_DEBOUNCE_INTERVAL)
@@ -25,7 +22,7 @@ const State = module.exports = Object.assign(new EventEmitter(), {
 function getDefaultState() {
   const LocationHistory = require('location-history')
 
-  return {
+  const state = {
     /*
      * Temporary state disappears once the program exits.
      */
@@ -43,6 +40,7 @@ function getDefaultState() {
       onConfirm: () => {}, 
       onCancel: () => {},
     },
+    todoStore: null,
 
     /*
      * Saved state is read from and written to a file every time the app runs.
@@ -61,12 +59,17 @@ function getDefaultState() {
      */
     saved: {},
   }
+
+  state.todoStore = new TodoStore(state)
+
+  return state
 }
 
 /* If the saved state file doesn't exist yet, here's what we use isntead */
 function setupStateSaved() {
   const saved = {
-    todos: [],
+    todos: [null],  // 0-index slot is reserved.
+    todosIndex: { "incomplete": [] },
     rewards: [],
     tags: [null],   // 0-index slot is reserved.
   }

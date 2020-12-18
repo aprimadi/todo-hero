@@ -1,5 +1,3 @@
-const nanoid = require('nanoid').nanoid
-
 const actions = require('../lib/actions')
 const { dispatch, dispatcher } = require('../lib/dispatcher')
 
@@ -9,34 +7,33 @@ module.exports = class TodoListController {
   }
 
   addTodo(name, tagId) {
-    const todo = {
-      id: nanoid(), 
+    this.state.todoStore.add({
       name: name, 
-      tagId: tagId,
-      done: false
-    }
-    this.state.saved.todos.unshift(todo)
+      tagId: tagId, 
+      done: false,
+      completedAt: null,
+    })
     dispatch(actions.STATE_SAVE)
     dispatcher(actions.UPDATE)
   }
 
   updateTodo(id, name, tagId) {
-    const todo = this.state.saved.todos.find((t) => t.id == id)
-    todo.name = name
-    todo.tagId = tagId
+    this.state.todoStore.update(id, {
+      name: name,
+      tagId: tagId,
+    })
     dispatch(actions.STATE_SAVE)
     dispatcher(actions.UPDATE)
   }
 
   toggleTodo(id) {
-    const todo = this.state.saved.todos.find((t) => t.id == id)
-    todo.done = !todo.done
+    this.state.todoStore.toggle(id)
     dispatch(actions.STATE_SAVE)
     dispatcher(actions.UPDATE)
   }
 
   deleteTodo(id) {
-    this.state.saved.todos = this.state.saved.todos.filter((t) => t.id != id)
+    this.state.todoStore.remove(id)
     dispatch(actions.STATE_SAVE)
     dispatcher(actions.UPDATE)
   }

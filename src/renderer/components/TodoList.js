@@ -111,15 +111,8 @@ class TodoList extends React.Component {
     const state = this.props.state
 
     const todoItems = []
-    var todos = [...state.saved.todos]
-    let incomplete = todos.filter((t) => !t.done)
-    let complete = todos.filter((t) => t.done)
-    incomplete.sort(this.todoSortFn.bind(this))
-    complete.sort(this.todoSortFn.bind(this))
-    for (let todo of incomplete) {
-      todoItems.push(<TodoItem state={state} todo={todo} />)
-    }
-    for (let todo of complete) {
+    var todos = state.todoStore.items()
+    for (let todo of todos) {
       todoItems.push(<TodoItem state={state} todo={todo} />)
     }
     
@@ -137,30 +130,11 @@ class TodoList extends React.Component {
       </div>
     )
   }
-
-  todoSortFn(a, b) {
-    const ta = findTag(this.props.state, a.tagId)
-    const tb = findTag(this.props.state, b.tagId)
-    const p = {
-      bronze: 1,
-      silver: 2,
-      gold: 3
-    }
-    if (ta && tb) {
-      return p[tb.pointType] - p[ta.pointType]
-    } else {
-      return 0
-    }
-  }
 }
 
 function findTag(state, tagId) {
   const tag = state.saved.tags[tagId]
   return tag
 }
-
-const updateTodoName = debounce((todo, e) => {
-  dispatch(actions.UPDATE_TODO, todo.id, e.target.value, todo.tagId)
-}, 1000)
 
 module.exports = TodoList

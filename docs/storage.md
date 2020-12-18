@@ -9,8 +9,13 @@ the end of the array. When a todo item is deleted, the item on the giant array
 is set to null. This will leave empty slot in the giant array but right now
 this is not an issue as we suspect that delete rarely occurs.
 
+Todo index is a mapping from `todo.completedAt` date to a sorted list of todo 
+item ids. The list is sorted by point type in decreasing order (i.e., todo 
+item with point type gold comes before silver).
+
 TodoStore is the class that is responsible for abstracting the underlying todo
-list storage. Its main interface are `items()`, `add()`, `update()`. 
+list storage. Its main interface are `items()`, `add()`, `update()`, and 
+`delete()`. 
 `items()` return a list of todo items that is incomplete and completed today. 
 `add()` add the todo item to the underlying giant array and update the index.
 `update()` find the todo item in the giant array and update it. `delete()`

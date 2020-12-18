@@ -50,7 +50,7 @@ class RewardList extends React.Component {
     // Add all points from completed todo
     const todos = [...state.saved.todos]
     for (let todo of todos) {
-      if (todo.tagId && todo.done) {
+      if (todo && todo.tagId && todo.done) {
         let tag = this.findTag(todo.tagId)
         if (tag) {
           total[tag.pointType] = total[tag.pointType] + parseInt(tag.point)
