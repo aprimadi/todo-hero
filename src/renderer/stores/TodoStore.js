@@ -77,6 +77,7 @@ class TodoStore {
     const tag = findTag(this.state, todo.tagId)
     let idx = 0
     if (tag) {
+      todosIndex[indexKey] = todosIndex[indexKey] || []
       // Find insert index
       while (idx < todosIndex[indexKey].length) {
         const _id = todosIndex[indexKey][idx]
