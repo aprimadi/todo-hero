@@ -18,6 +18,10 @@
   ],
   "author": "TodoHero, LLC",
   "license": "MIT",
+  "os": [
+    "darwin",
+    "linux"
+  ],
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.11.2",
@@ -33,7 +37,6 @@
     "semver": "^7.3.2"
   },
   "devDependencies": {
-    "appdmg": "^0.6.0",
     "buble": "^0.20.0",
     "cross-zip": "^4.0.0",
     "electron": "^10.1.5",
